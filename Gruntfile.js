@@ -314,6 +314,22 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+    s3: {
+      options: {
+        bucket: 'ng-resizer',
+        access: 'public-read'
+      },
+      deploy: {
+        upload: [
+          {
+            src: '<%= yeoman.dist %>/{,**/}*',
+            dest: '',
+            rel: '<%= yeoman.dist %>/',
+            gzip: true
+          }
+        ]
+      }
     }
   });
 
@@ -355,6 +371,11 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'build',
+    's3'
   ]);
 
   grunt.registerTask('default', [
