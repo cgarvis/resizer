@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div id="drop_zone" image-drop="raw">
+            <p ng-hide="original.name">Drop images here</p>
+            <p ng-show="original.name">{{original.name}} ({{original.size | human_readable_size}})</p>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="original.image">
+    <div class="col-md-3">
+        <div class="well">
+            <dl>
+                <dt>Name</dt>
+                <dd>{{original.name}}</dd>
+                <dt>Dimensions</dt>
+                <dd>{{original.width}} x {{original.height}}</dd>
+                <dt>Aspect Ratio</dt>
+                <dd>{{original.ratio[0]}}:{{original.ratio[1]}}</dd>
+                <dt>Size</dt>
+                <dd>{{original.size | human_readable_size}}</dd>
+            </dl>
+        </div>
+
+        <div class="btn-group btn-group-justified">
+            <a href="" class="btn btn-default">Crop</a>
+            <a href="" class="btn btn-default">Resize</a>
+        </div>
+
+
+        <button type="button" class="btn btn-success pull-right">Save Image</button>
+    </div>
+    <div class="col-sm-9">
+        <img ng-src="{{original.image}}" class="thumbnail img-responsive">
+    </div>
+</div>
