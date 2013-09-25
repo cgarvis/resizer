@@ -1,7 +1,21 @@
 'use strict'
 
-describe 'Controller: MainCtrl', () ->
+describe 'Factory: GCD', () ->
+  # load the controller's module
+  beforeEach module 'resizer'
 
+  gcd = ->
+
+  beforeEach inject (_gcd_) ->
+    gcd = _gcd_
+
+  it 'finds the greatest common denominator for 4 and 8', ->
+    expect(gcd(4,8)).toBe 4
+
+  it 'finds the greatest common denominator for 8 and 4', ->
+    expect(gcd(8,4)).toBe 2
+
+describe 'Controller: MainCtrl', () ->
   # load the controller's module
   beforeEach module 'resizer'
 
