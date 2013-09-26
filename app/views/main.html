@@ -21,16 +21,13 @@
                 <dd>{{original.size | human_readable_size}}</dd>
             </dl>
         </div>
-
-        <div class="btn-group btn-group-justified">
-            <a href="" class="btn btn-default">Crop</a>
-            <a href="" class="btn btn-default">Resize</a>
+        <div class="well">
+            <h1>Resize</h1>
+            <select ng-model="resize.ratio" ng-options="r.name for r in ratios"></select>
         </div>
-
-
-        <button type="button" class="btn btn-success pull-right">Save Image</button>
     </div>
     <div class="col-sm-9">
-        <img ng-src="{{original.image}}" class="thumbnail img-responsive">
+        <img ng-src="{{original.image}}" class="thumbnail img-responsive" ng-hide="resize.image">
+        <img ng-src="{{resize.image}}" class="thumbnail" ng-show="resize.image">
     </div>
 </div>

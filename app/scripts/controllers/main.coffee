@@ -40,7 +40,41 @@ angular.module('resizer')
         y = z
       x
 
-  .controller 'MainCtrl', ($scope, fileReader, gcd) ->
+  .factory 'resizeImage', ($q) ->
+    ($scope, image, ratio) ->
+      deferred = $q.defer()
+
+      img = new Image()
+
+      img.onload = ->
+        $scope.$apply ->
+          canvas = document.createElement("canvas")
+          ctx = canvas.getContext("2d")
+
+          ctx.width = img.width * ratio
+          ctx.height = img.height * ratio
+
+          ctx.drawImage(img, 0, 0, ctx.width, ctx.height)
+          dataUrl = canvas.toDataURL()
+
+          deferred.resolve(dataUrl)
+
+      img.src = image
+
+      deferred.promise
+
+  .controller 'MainCtrl', ($scope, fileReader, gcd, resizeImage) ->
+    $scope.ratios = [
+      {name: '100%', ratio: 1.0}
+      {name: '75%', ratio: 0.75}
+      {name: '50%', ratio: 0.5}
+      {name: '25%', ratio: 0.25}
+    ]
+
+    $scope.resize =
+      ratio: $scope.ratios[0]
+      image: ''
+
     $scope.$watch 'raw', (raw) ->
       if raw?
         img = new Image()
@@ -55,3 +89,16 @@ angular.module('resizer')
 
         common = gcd(Math.abs(img.width), Math.abs(img.height)).toString(10)
         $scope.original.ratio = [img.width / common, img.height / common]
+
+    resize = (ratio) ->
+      if ratio? and $scope.original?.image?
+        success = (dataUrl) ->
+          $scope.resize.image = dataUrl
+
+        fail = (err) ->
+          console.log err
+
+        promise = resizeImage($scope, $scope.original.image, ratio)
+        promise.then(success, fail)
+
+    $scope.$watch('resize.ratio', resize, true)
